@@ -45,29 +45,30 @@ var FormValidation = {
       $("#username-group").removeClass("has-success has-error");
       $("#helpBlock1").text("");
 
-      var usr  = username.replace(/\s/g, '');
+     var usr  = username.replace(/\s/g, '');
       $.ajax({
-        url: 'json/users.json',
-        dataType: 'json',
-        success: function (userList) {
-        var userExists = (userList.users.indexOf(usr) > -1);
+        type: "POST",
+        url: "checkuser.php",
+        data: {'username' : username},
+        success: function (data) {
 
-        if ((usr === null) || (usr ==="") || (usr === undefined) ){
+          if(username===""){
             $("#username-group").addClass("has-error");
             $("#helpBlock1").text(text.message.empty).show();
             cback(false);
-        }
-        else{
-            if (userExists === true){
+          }
+
+          else{
+            if(data =="exists"){
               $("#username-group").addClass("has-error");
               $("#helpBlock1").text(text.message.username.fail).show();
               cback(false);
             }
-            else{
-              $("#username-group").addClass("has-success");
-              $("#helpBlock1").text(text.message.username.pass).show();
-              cback(true);
-            }
+          else{
+            $("#username-group").addClass("has-success");
+            $("#helpBlock1").text(text.message.username.pass).show();
+            cback(true);
+          }
           }
         }
       });
@@ -104,6 +105,20 @@ var FormValidation = {
       }
     },
 
+    checkCaptcha : function(){
+      $("#captcha-group").removeClass("has-success has-error");
+      if (grecaptcha.getResponse().length !== 0) {
+        return true;
+      }
+      else{
+        $("#captcha-group").addClass("has-error");
+        $("#helpBlock5").text(text.message.recaptcha).show();
+        return false;
+      }
+
+
+    },
+
     pwdComplex : function(pwd1){
       $("#pw1-group").removeClass("has-success has-error");
           if ((pwd1 === null) || (pwd1 ==="") || (pwd1 === undefined)){
@@ -112,13 +127,8 @@ var FormValidation = {
             return false;
           }
 
-          if (pwd1 < 7){
-            $("#pw1-group").addClass("has-error");
-            $("#helpBlock3").text(text.message.passlength).show();
-            return false;
-          }
           else {
-                if (  (pwd1.match(/\d+/g)) && (pwd1.match(/[a-z]/g)) && (pwd1.match(/[A-Z]/g)) && (pwd1.match(/^[\w\W]*\W[\w\W]*$/))  ){
+                if ( (pwd1.length >= 7) && (pwd1.match(/\d+/g)) && (pwd1.match(/[a-z]/g)) && (pwd1.match(/[A-Z]/g)) && (pwd1.match(/^[\w\W]*\W[\w\W]*$/))  ){
                   $("#pw1-group").addClass("has-success");
                   $("#helpBlock3").text(text.message.complex.pass).show();
                   return true;
@@ -290,12 +300,17 @@ $("#submit").on("click", function(e) {
   submitArray.push(usr,email, pwd1, pwd2);
   var callback = FormValidation.userAvailable(userCallback, usr);
 
-  if((userFree === true) && (FormValidation.emailValid(email) === true) && (FormValidation.pwdComplex(pwd1) === true) && (FormValidation.pwdMatch(pwd1, pwd2)===true) && (FormValidation.empty(submitArray)===true) ){
-    console.log("form validation successful.");
-  }
-  else {
+  if (FormValidation.checkCaptcha() === false){
     e.preventDefault();
-    console.log("form validation failed.");
+  }
+  else{
+      if((userFree === true) && ((grecaptcha.getResponse().length !== 0) === true) && (FormValidation.emailValid(email) === true) && (FormValidation.pwdComplex(pwd1) === true) && (FormValidation.pwdMatch(pwd1, pwd2)===true) && (FormValidation.empty(submitArray)===true) ){
+        console.log("form validation successful.");
+      }
+      else {
+        e.preventDefault();
+        console.log("form validation failed.");
+      }
   }
 });
 

@@ -1,8 +1,8 @@
 <?php
 
-$captcha;
+
 if(isset($_POST['g-recaptcha-response']) && ($_POST['username']) && ($_POST['password1']) && ($_POST['password2'])  ){
-  
+$captcha;
   $username = $_POST['username'];
   $email = $_POST['email'];
 

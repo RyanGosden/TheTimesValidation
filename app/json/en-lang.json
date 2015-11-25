@@ -38,7 +38,8 @@
             "username" : {
                           "fail" : "Username is not available.",
                           "pass" : "Username is available."
-                          }
+                        },
+            "recaptcha" : "Please tick recaptcha."
 
 
         }

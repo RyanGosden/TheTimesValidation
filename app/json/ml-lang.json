@@ -38,7 +38,8 @@
             "username" : {
                           "fail" : "Username ma tkunx disponibbli.",
                           "pass" : "Username hija disponibbli."
-                          }
+                        },
+            "recaptcha" : "Jekk jogħġbok immarka recaptcha."
 
 
         }
