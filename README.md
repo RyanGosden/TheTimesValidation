@@ -12,9 +12,10 @@ Changlog
 * Form Testing
 * Accessability Testing
 * JS structure change to follow more of a modular pattern. 
+* Prevent a username with the same name but different Upper/Lower cases from being created
 
 ######Known Issues:
-* Recaptcha is not verifying on live server.  
+* ~~Recaptcha is not verifying on live server.~~  (Fixed)
 
 
 
