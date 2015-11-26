@@ -6,6 +6,12 @@ Changlog
 * Username availablity is now handled from backend.
 * Added accept-charset="character_set" attribute to form element.
 * Increased user max charachter length to 25.
+* Fixed error message when entering less than 7 characters.  
+
+######Upcoming Changes:  
+* Form Testing
+* Accessability Testing
+* JS structure change to follow more of a modular pattern. 
 
 ######Known Issues:
 * Recaptcha is not verifying on live server.  
@@ -13,7 +19,7 @@ Changlog
 
 
 ####V1.0
-######Tasks still to perform:  
+######Upcoming Changes:  
 * System testing
 * Form Testing
 * Accessibility testing
