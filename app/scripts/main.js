@@ -12,6 +12,8 @@ function changeLang(lang){
     url: lang,
     dataType: 'json',
     success: function (data) {
+      $("html").attr("lang" , data.lang);
+      $("#register").attr("accept-charset" , data.charset);
       $("#form-title").text(data.title);
       $("#lang-text").text(data.langtext);
       $("#lang-eng").text(data.selectlanguage.english);
@@ -20,6 +22,7 @@ function changeLang(lang){
       $("#label-email").text(data.form.email);
       $("#label-pass1").text(data.form.password);
       $("#label-pass2").text(data.form.repassword);
+
       text = data;
     }
   });
@@ -27,21 +30,38 @@ function changeLang(lang){
 //set default language to english;
 changeLang(lang);
 
-///////////////////////////////////////////////////////////////////////////////
-//** Validation Object
+/////////////////////////////////////////////////////////////////////////////
+//******************* Validation Object***********************************//
 
-var FormValidation = {
-    empty: function(array){
-     var i=0;
+var FormValidationModule = (function(){
+
+  var checkAll = function(array){
+    var usr = array[0];
+    var email = array[1];
+    var pwd1 = array[2];
+    var pwd2 = array[3];
+
+    if( (FormValidationModule.checkCaptcha() === true) && (FormValidationModule.emailValid(email) === true) && (FormValidationModule.pwdComplex(pwd1) === true) && (FormValidationModule.pwdMatch(pwd1, pwd2)===true) && (FormValidationModule.empty(array)===true) ){
+      console.log("form validation successful.");
+      return true;
+    }
+    else {
+      console.log("form validation failed.");
+      return false;
+    }
+  };
+
+  var empty = function(array){
+    var i=0;
        if ( (array[i] === "") || (array[i].length === 0) || (array[i] === null)   ){
          return false;
        }
        else{
          return true;
        }
-    },
+    };
 
-    userAvailable : function(cback, username){
+  var userAvailable = function(cback, username){
       $("#username-group").removeClass("has-success has-error");
       $("#helpBlock1").text("");
 
@@ -72,9 +92,9 @@ var FormValidation = {
           }
         }
       });
-    },
+    };
 
-    emailValid : function(email){
+    var emailValid = function(email){
       $("#email-group").removeClass("has-success has-error");
 
       var regex = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
@@ -88,9 +108,9 @@ var FormValidation = {
           $("#helpBlock2").text(text.message.email.pass).show();
           return true;
         }
-    },
+    };
 
-    pwdMatch : function(pwd1, pwd2){
+    var pwdMatch = function(pwd1, pwd2){
       $("#pw2-group").removeClass("has-success has-error");
 
       if (pwd1 === pwd2) {
@@ -103,9 +123,9 @@ var FormValidation = {
         $("#helpBlock4").text(text.message.passmatch.fail).show();
         return false;
       }
-    },
+    };
 
-    checkCaptcha : function(){
+    var checkCaptcha = function(){
       $("#captcha-group").removeClass("has-success has-error");
       if (grecaptcha.getResponse().length !== 0) {
         return true;
@@ -116,10 +136,9 @@ var FormValidation = {
         return false;
       }
 
+    };
 
-    },
-
-    pwdComplex : function(pwd1){
+    var pwdComplex = function(pwd1){
       $("#pw1-group").removeClass("has-success has-error");
           if ((pwd1 === null) || (pwd1 ==="") || (pwd1 === undefined)){
             $("#pw2-group").addClass("has-error");
@@ -139,9 +158,24 @@ var FormValidation = {
                 return false;
                 }
               }
-    },
+    };
 
-};
+    return{
+        //Methods are now public - (Any properties/methods not listed are private)
+        checkAll : checkAll,
+        empty : empty,
+        userAvailable : userAvailable,
+        emailValid : emailValid,
+        checkCaptcha : checkCaptcha,
+        pwdMatch : pwdMatch,
+        pwdComplex : pwdComplex
+      };
+
+})();
+
+
+
+
 //Function Visually displays password strength
 function showPasswordStrength(score){
   var pwText;
@@ -292,49 +326,45 @@ $("#lang-mlt").on("click", function(){
 });
 
 $("#submit").on("click", function(e) {
+
   var usr = $("#username").val();
   var email = $("#email").val();
   var pwd1 = $("#password1").val();
   var pwd2 = $("#password2").val();
   var submitArray = [];
   submitArray.push(usr,email, pwd1, pwd2);
-  var callback = FormValidation.userAvailable(userCallback, usr);
 
-  if (FormValidation.checkCaptcha() === false){
-    e.preventDefault();
-  }
-  else{
-      if((userFree === true) && ((grecaptcha.getResponse().length !== 0) === true) && (FormValidation.emailValid(email) === true) && (FormValidation.pwdComplex(pwd1) === true) && (FormValidation.pwdMatch(pwd1, pwd2)===true) && (FormValidation.empty(submitArray)===true) ){
-        console.log("form validation successful.");
-      }
-      else {
-        e.preventDefault();
-        console.log("form validation failed.");
-      }
-  }
+    if (FormValidationModule.checkAll(submitArray) === true){
+      console.log("form validation successful.");
+    }
+
+    else {
+      e.preventDefault();
+      console.log("form validation failed.");
+    }
 });
 
 $('#username').on('keyup', function(){
   var usr = $("#username").val();
-  FormValidation.userAvailable(userCallback, usr);
+  FormValidationModule.userAvailable(userCallback, usr);
 });
 
 $('#email').on('keyup', function(){
   var email = $("#email").val();
-  FormValidation.emailValid(email);
+  FormValidationModule.emailValid(email);
 });
 
 $('#password1').on('keyup', function(){
   $(".pwstr-block").remove();
   var pass = $("#password1").val();
   checkStrength(pass);
-  FormValidation.pwdComplex(pass);
+  FormValidationModule.pwdComplex(pass);
 });
 
 $('#password2, #password1').on('keyup', function(){
   var pwd1 = $("#password1").val();
   var pwd2 = $("#password2").val();
-  FormValidation.pwdMatch(pwd1, pwd2);
+  FormValidationModule.pwdMatch(pwd1, pwd2);
 });
 
 });

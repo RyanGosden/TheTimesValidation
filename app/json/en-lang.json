@@ -1,4 +1,6 @@
 {"title" : "Sign Up Today!!",
+       "charset" : "ISO-8859-1",
+       "lang" : "en",
         "selectlanguage": {
             "english" : "Select English",
             "maltese" : "Select Maltese"

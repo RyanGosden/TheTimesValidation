@@ -309,7 +309,9 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             'images/{,*/}*.webp',
             '{,*/}*.html',
-            'styles/fonts/{,*/}*.*'
+            'styles/fonts/{,*/}*.*',
+            '{,*/}*.php',
+            'json/{,*/}*.json'
           ]
         }, {
           expand: true,
@@ -358,7 +360,7 @@ module.exports = function (grunt) {
       dist: [
         'babel',
         'copy:styles',
-        // 'imagemin',
+        'imagemin',
         'svgmin'
       ]
     }
