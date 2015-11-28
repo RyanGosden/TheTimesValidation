@@ -1,13 +1,34 @@
-# TheTimesValidation (current state)
-Instructions: Place app folder on server.
+# TheTimesValidation V1.1
+Instructions: Add dist folder to web server.
 
-######Tasks still to perform:  
-* System testing
+
+Demo: [http://breadcrumbs.com.mt/portfolio/tests/times/index.html]
+
+####V1.1
+Changlog
+* Username availablity is now handled from backend.
+* Added accept-charset="character_set" attribute to form element.
+* Increased user max charachter length to 25.
+* Fixed error message when entering less than 7 characters.  
+
+######Upcoming Changes:  
+* Form Testing
+* Accessability Testing
+* JS structure change to follow more of a modular pattern. 
+* Prevent a username with the same name but different Upper/Lower cases from being created
+
+######Known Issues:
+* ~~Recaptcha is not verifying on live server.~~  (Fixed)
+
+
+
+####V1.0
+######Upcoming Changes:  
 * Form Testing
 * Accessibility testing
 * Change 'username availability' to backend (This will save downloading the whole user.json file)
 
 ######Known Issues:
-* When typing less than 7 characters in password field, form validation fails although error message is not displayed.  
+* When typing less than 7 characters in password field, form validation fails although error message is not displayed.
 
 
