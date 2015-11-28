@@ -1,8 +1,14 @@
-# TheTimesValidation V1.1
-Instructions: Add dist folder to web server.
-
+# TheTimesValidation V1.2
+Instructions: Compile with 'grunt build'.
 
 Demo: [http://breadcrumbs.com.mt/portfolio/tests/times/index.html]
+
+####V1.2
+Changlog
+* Dynamically adds accept-charset="xxx" acording to Maltese / English in form element.
+* Dynamically adds lang attribute on html element acording to langauge chosen. 
+* Changed the validation object to a modular structure. 
+
 
 ####V1.1
 Changlog
