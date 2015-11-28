@@ -42,11 +42,11 @@ var FormValidationModule = (function(){
     var pwd2 = array[3];
 
     if( (FormValidationModule.checkCaptcha() === true) && (FormValidationModule.emailValid(email) === true) && (FormValidationModule.pwdComplex(pwd1) === true) && (FormValidationModule.pwdMatch(pwd1, pwd2)===true) && (FormValidationModule.empty(array)===true) ){
-      console.log("form validation successful.");
+      console.log("Form validation successful.");
       return true;
     }
     else {
-      console.log("form validation failed.");
+      console.log("Form validation failed.");
       return false;
     }
   };
@@ -170,10 +170,7 @@ var FormValidationModule = (function(){
         pwdMatch : pwdMatch,
         pwdComplex : pwdComplex
       };
-
 })();
-
-
 
 
 //Function Visually displays password strength
