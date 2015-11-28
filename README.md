@@ -1,5 +1,5 @@
 # TheTimesValidation V1.2
-Instructions: Compile with 'grunt build'.
+Instructions: Run **npm install** and **bower install** from directory and place on server. 
 
 Demo: [http://breadcrumbs.com.mt/portfolio/tests/times/index.html]
 
